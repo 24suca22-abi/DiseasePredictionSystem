@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Medical Specialist Recommendation</title>
+</head>
+
+<body>
+
+    <h1>Medical Specialist Recommendation</h1>
+
+    <h2>Predicted Disease: {{ disease }}</h2>
+
+    <h2>Confidence Score: {{ confidence }}%</h2>
+
+    <h2>Recommended Specialist: {{ specialist }}</h2>
+
+    <button onclick="findNearby()">
+        Find Nearby Specialist
+    </button>
+
+    <p id="location"></p>
+
+    <script>
+        function findNearby() {
+
+            if (navigator.geolocation) {
+
+                navigator.geolocation.getCurrentPosition(function(position) {
+
+                    let latitude = position.coords.latitude;
+                    let longitude = position.coords.longitude;
+
+                    document.getElementById("location").innerHTML =
+                        "Location detected successfully!";
+
+                    let specialist = "{{ specialist }}";
+
+                    let mapUrl =
+                        "https://www.google.com/maps/search/" +
+                        encodeURIComponent(specialist) +
+                        "/@" + latitude + "," + longitude + ",14z";
+
+                    window.open(mapUrl, "_blank");
+
+                });
+
+            } else {
+                document.getElementById("location").innerHTML =
+                    "Location is not supported by this browser.";
+            }
+        }
+    </script>
+
+</body>
+</html>

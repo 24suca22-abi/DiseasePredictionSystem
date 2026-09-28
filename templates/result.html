@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prediction Result</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            margin-top: 0;
+        }
+
+        .disease {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .confidence {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .specialist {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 15px;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            margin-top: 15px;
+        }
+
+        .specialist-btn {
+            background: #16a34a;
+            color: white;
+        }
+
+        .billing-btn {
+            background: #7c3aed;
+            color: white;
+        }
+
+        .predict-btn {
+            background: #2563eb;
+            color: white;
+        }
+
+        .note {
+            color: #777;
+            font-size: 13px;
+            margin-top: 15px;
+        }
+
+        .center {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>🩺 Disease Prediction Result</h1>
+        <p>Your ML-based prediction result</p>
+    </div>
+
+
+    <!-- DISEASE RESULT -->
+
+    <div class="card">
+
+        <h2>🔍 Predicted Disease</h2>
+
+        <p class="disease">
+            {{ disease }}
+        </p>
+
+    </div>
+
+
+    <!-- CONFIDENCE -->
+
+    <div class="card">
+
+        <h2>📊 Confidence Score</h2>
+
+        <p class="confidence">
+            {{ confidence }}%
+        </p>
+
+    </div>
+
+
+    <!-- SPECIALIST -->
+
+    <div class="card">
+
+        <h2>👨‍⚕️ Medical Specialist Recommendation</h2>
+
+        <p>
+            Recommended Specialist:
+        </p>
+
+        <p class="specialist">
+            {{ specialist }}
+        </p>
+
+        <hr>
+
+        <h3>📍 Find Nearby Specialist</h3>
+
+        <form action="/find_specialist" method="GET">
+
+            <input type="hidden"
+                   name="specialist"
+                   value="{{ specialist }}">
+
+            <label>
+                Enter your location:
+            </label>
+
+            <input type="text"
+                   name="location"
+                   placeholder="Example: Chennai"
+                   required>
+
+            <button class="specialist-btn" type="submit">
+                Find Nearby Specialist
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- BILLING -->
+
+    <div class="card">
+
+        <h2>🧾 Medical Cost Estimation</h2>
+
+        <p>
+            Check your estimated consultation and
+            laboratory test costs.
+        </p>
+
+        <a href="/billing?disease={{ disease }}&specialist={{ specialist }}">
+
+            <button class="billing-btn">
+                View Medical Cost & Bill
+            </button>
+
+        </a>
+
+    </div>
+
+
+    <!-- PREDICT AGAIN -->
+
+    <div class="card center">
+
+        <a href="/disease_prediction">
+
+            <button class="predict-btn">
+                🔄 Predict Again
+            </button>
+
+        </a>
+
+        <p class="note">
+            Note: This system provides an ML-based prediction
+            for educational purposes.
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+</html>

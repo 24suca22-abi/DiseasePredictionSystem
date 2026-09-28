@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Disease Prediction System</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 85%;
+            max-width: 900px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .symptoms {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .symptom {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+        }
+
+        .symptom:hover {
+            background: #eef3f8;
+        }
+
+        .symptom input {
+            margin-right: 10px;
+        }
+
+        .predict-btn {
+            display: block;
+            width: 100%;
+            margin-top: 30px;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 17px;
+            cursor: pointer;
+            background: #2563eb;
+            color: white;
+        }
+
+        .predict-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .note {
+            margin-top: 20px;
+            text-align: center;
+            color: #777;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            .symptoms {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                width: 90%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🩺 Disease Prediction System</h1>
+
+    <p class="subtitle">
+        Select your symptoms to predict a possible disease
+    </p>
+
+    <h2>Select Your Symptoms</h2>
+
+    <form method="POST" action="/predict">
+
+        <div class="symptoms">
+
+            <label class="symptom">
+                <input type="checkbox" name="symptoms" value="fever">
+                Fever
+            </label>
+
+            <label class="symptom">
+                <input type="checkbox" name="symptoms" value="cough">
+                Cough
+            </label>
+
+            <label class="symptom">
+                <input type="checkbox" name="symptoms" value="headache">
+                Headache
+            </label>
+
+            <label class="symptom">
+                <input type="checkbox" name="symptoms" value="fatigue">
+                Fatigue
+            </label>
+
+            <label class="symptom">
+                <input type="checkbox" name="symptoms" value="sore_throat">
+                Sore Throat
+            </label>
+
+            <label class="symptom">
+                <input type="checkbox" name="symptoms" value="runny_nose">
+                Runny Nose
+            </label>
+
+            <label class="symptom">
+                <input type="checkbox" name="symptoms" value="body_pain">
+                Body Pain
+            </label>
+
+            <label class="symptom">
+                <input type="checkbox" name="symptoms" value="nausea">
+                Nausea
+            </label>
+
+            <label class="symptom">
+                <input type="checkbox" name="symptoms" value="vomiting">
+                Vomiting
+            </label>
+
+            <label class="symptom">
+                <input type="checkbox" name="symptoms" value="diarrhea">
+                Diarrhea
+            </label>
+
+            <label class="symptom">
+                <input type="checkbox" name="symptoms" value="chills">
+                Chills
+            </label>
+
+            <label class="symptom">
+                <input type="checkbox" name="symptoms" value="abdominal_pain">
+                Abdominal Pain
+            </label>
+
+            <label class="symptom">
+                <input type="checkbox" name="symptoms" value="chest_pain">
+                Chest Pain
+            </label>
+
+            <label class="symptom">
+                <input type="checkbox" name="symptoms" value="shortness_of_breath">
+                Shortness of Breath
+            </label>
+
+            <label class="symptom">
+                <input type="checkbox" name="symptoms" value="wheezing">
+                Wheezing
+            </label>
+
+            <label class="symptom">
+                <input type="checkbox" name="symptoms" value="skin_rash">
+                Skin Rash
+            </label>
+
+            <label class="symptom">
+                <input type="checkbox" name="symptoms" value="itching">
+                Itching
+            </label>
+
+            <label class="symptom">
+                <input type="checkbox" name="symptoms" value="frequent_urination">
+                Frequent Urination
+            </label>
+
+            <label class="symptom">
+                <input type="checkbox" name="symptoms" value="excessive_thirst">
+                Excessive Thirst
+            </label>
+
+            <label class="symptom">
+                <input type="checkbox" name="symptoms" value="joint_pain">
+                Joint Pain
+            </label>
+
+            <label class="symptom">
+                <input type="checkbox" name="symptoms" value="back_pain">
+                Back Pain
+            </label>
+
+            <label class="symptom">
+                <input type="checkbox" name="symptoms" value="dizziness">
+                Dizziness
+            </label>
+
+            <label class="symptom">
+                <input type="checkbox" name="symptoms" value="loss_of_taste">
+                Loss of Taste
+            </label>
+
+            <label class="symptom">
+                <input type="checkbox" name="symptoms" value="loss_of_smell">
+                Loss of Smell
+            </label>
+
+            <label class="symptom">
+                <input type="checkbox" name="symptoms" value="nasal_congestion">
+                Nasal Congestion
+            </label>
+
+        </div>
+
+        <button class="predict-btn" type="submit">
+            Predict Disease
+        </button>
+
+    </form>
+
+    <p class="note">
+        Note: This system provides an ML-based prediction for educational purposes.
+    </p>
+
+</div>
+
+</body>
+</html>
