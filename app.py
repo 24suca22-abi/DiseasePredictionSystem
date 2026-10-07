@@ -31,7 +31,7 @@ def create_database():
 
 @app.route("/")
 def home():
-    return render_template("disease.html")
+    return render_template("disease_prediction.html")
 
 
 # ---------------- LOGIN ----------------
