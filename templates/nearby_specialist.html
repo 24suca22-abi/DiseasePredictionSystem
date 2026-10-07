@@ -1,27 +1,61 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Nearby Specialist</title>
-</head>
+{% extends "base.html" %}
 
-<body>
+{% block title %}Find Nearby Specialist | Care Nova{% endblock %}
 
-    <h1>Find Nearby Specialist</h1>
+{% block content %}
+<div class="container-narrow">
+    <div class="card">
+        <div class="card-header text-center">
+            <div class="header-icon-badge">📍</div>
+            <h1 class="card-title">Find Nearby Specialist</h1>
+            <p class="card-subtitle">
+                Locate accredited doctors, clinics, and healthcare centers in your vicinity
+            </p>
+        </div>
 
-    <form action="/find_specialist" method="GET">
+        {% if specialist %}
+        <div class="specialty-highlight-box">
+            <span>
+                Target Specialty: <strong>{{ specialist }}</strong>
+            </span>
+        </div>
+        {% endif %}
 
-        <label>Enter your location:</label>
+        <form action="{{ url_for('find_specialist') }}" method="GET" style="margin-bottom: 24px;">
+            {% if specialist %}
+            <input type="hidden" name="specialist" value="{{ specialist }}">
+            {% endif %}
 
-        <input type="text"
-               name="location"
-               placeholder="Example: Chennai"
-               required>
+            <div class="form-group">
+                <label class="form-label" for="location">Enter your city or locality:</label>
+                <div class="location-search-row">
+                    <input 
+                        type="text" 
+                        id="location"
+                        name="location" 
+                        class="form-control"
+                        placeholder="e.g. Chennai, Mumbai, Bangalore, Hyderabad..." 
+                        required
+                        autofocus
+                    >
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        Find Specialist ➔
+                    </button>
+                </div>
+            </div>
+        </form>
 
-        <br><br>
-
-        <button type="submit">Find Specialist</button>
-
-    </form>
-
-</body>
-</html>
+        <div class="geo-detect-section">
+            <p class="geo-detect-hint">Or detect your current position automatically:</p>
+            <button 
+                type="button" 
+                class="btn btn-secondary" 
+                onclick="detectLocationAndFind('{{ specialist if specialist else 'General Physician' }}')"
+            >
+                🛰️ Detect My GPS Location
+            </button>
+            <p id="geo-status" style="margin-top: 12px; font-size: 0.88rem; color: var(--primary); display: none;"></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

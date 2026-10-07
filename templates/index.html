@@ -1,27 +1,170 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Disease Prediction System</title>
-</head>
+{% extends "base.html" %}
 
-<body>
+{% block title %}Care Nova | Smart Healthcare Assistant{% endblock %}
 
-    <h1>Disease Prediction System</h1>
-
-    <p>Welcome to our Disease Prediction System</p>
-
-    <p>
-        This system helps users predict possible diseases
-        based on their symptoms.
+{% block content %}
+<!-- Hero Section (About Care Nova) -->
+<section class="hero-section" id="about">
+    <div class="hero-badge">
+        <span class="badge-dot"></span>
+        AI-Powered Clinical Health Assistant
+    </div>
+    
+    <h1 class="hero-title">
+        Intelligent <span class="gradient-text">Health Assessment</span> & Clinical Guidance
+    </h1>
+    
+    <p class="hero-desc">
+        Welcome to Care Nova. Our intelligent system helps users predict possible diseases based on their symptoms, connects them to the right medical specialist, and provides estimated diagnostic costs.
     </p>
-    <br>
-    <a href="/login">
-    <button>Login</button></button>
-</a>
-<a href="/register">
-    <button>Register</button></button>
+    
+    <div class="hero-cta-wrapper">
+        <div class="hero-cta-group">
+            {% if is_authenticated %}
+                <a href="{{ url_for('disease_prediction') }}" class="btn btn-primary btn-lg">
+                    <span>🩺 Start Prediction</span>
+                </a>
+                <a href="{{ url_for('find_specialist') }}" class="btn btn-secondary btn-lg">
+                    <span>📍 Find Specialist</span>
+                </a>
+            {% else %}
+                <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">
+                    <span>Start Prediction ➔</span>
+                </a>
+                <a href="{{ url_for('login') }}" class="btn btn-secondary btn-lg">
+                    <span>Log In</span>
+                </a>
+            {% endif %}
+        </div>
 
-</body>
-</html>
+        {% if not is_authenticated %}
+            <p class="hero-auth-hint">
+                Already have an account? <a href="{{ url_for('login') }}" class="hint-link">Sign in to your account</a>
+            </p>
+        {% endif %}
+    </div>
+
+    <!-- Quick Stats / Trust Indicators -->
+    <div class="hero-stats-row">
+        <div class="stat-item">
+            <span class="stat-number">25+</span>
+            <span class="stat-label">Recognized Symptoms</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+            <span class="stat-number">95%+</span>
+            <span class="stat-label">Prediction Accuracy</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+            <span class="stat-number">10+</span>
+            <span class="stat-label">Medical Specialties</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+            <span class="stat-number">₹0</span>
+            <span class="stat-label">Free Assessment</span>
+        </div>
+    </div>
+</section>
+
+<!-- Core Features Section -->
+<section class="section-container" id="features">
+    <div class="section-header">
+        <h2 class="section-title">Core Capabilities</h2>
+        <p class="section-subtitle">Intelligent tools designed for swift, accurate, and accessible health guidance</p>
+    </div>
+
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon-box feature-icon-blue">
+                🤖
+            </div>
+            <h3 class="feature-title">AI Symptom Prediction</h3>
+            <p class="feature-desc">
+                Evaluates 25 distinct clinical symptoms using a trained Machine Learning model to calculate high-confidence disease diagnoses.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon-box feature-icon-green">
+                👨‍⚕️
+            </div>
+            <h3 class="feature-title">Specialist Matching</h3>
+            <p class="feature-desc">
+                Automatically directs patients to the right medical department—Neurologist, Cardiologist, Pulmonologist, Dermatologist, and more.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon-box feature-icon-purple">
+                🧾
+            </div>
+            <h3 class="feature-title">Medical Cost Estimation</h3>
+            <p class="feature-desc">
+                Provides complete cost transparency for doctor consultations and recommended laboratory diagnostic tests.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Workflow Steps Section -->
+<section class="section-container" id="how-it-works">
+    <div class="section-header">
+        <h2 class="section-title">How Care Nova Works</h2>
+        <p class="section-subtitle">Four simple steps to receive comprehensive health guidance</p>
+    </div>
+
+    <div class="steps-row">
+        <div class="step-box">
+            <div class="step-num">1</div>
+            <h4 class="step-title">Select Symptoms</h4>
+            <p class="step-desc">Pick from our comprehensive list of recognized clinical indicators.</p>
+        </div>
+        
+        <div class="step-box">
+            <div class="step-num">2</div>
+            <h4 class="step-title">ML Analysis</h4>
+            <p class="step-desc">Our Random Forest classifier analyzes symptom correlations.</p>
+        </div>
+
+        <div class="step-box">
+            <div class="step-num">3</div>
+            <h4 class="step-title">Review Findings</h4>
+            <p class="step-desc">View the probable disease, confidence score, and doctor department.</p>
+        </div>
+
+        <div class="step-box">
+            <div class="step-num">4</div>
+            <h4 class="step-title">Triage & Billing</h4>
+            <p class="step-desc">Locate nearby clinics and print itemized cost estimates.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Bottom CTA Section -->
+<section class="cta-banner-section">
+    <div class="cta-banner-card">
+        <div class="cta-banner-content">
+            <h3 class="cta-banner-title">Ready to Check Your Symptoms?</h3>
+            <p class="cta-banner-desc">
+                Begin your preliminary health assessment today with Care Nova's AI-assisted diagnostic tools.
+            </p>
+        </div>
+        <div class="cta-banner-actions">
+            {% if is_authenticated %}
+                <a href="{{ url_for('disease_prediction') }}" class="btn btn-primary btn-lg">
+                    Check Symptoms Now
+                </a>
+            {% else %}
+                <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">
+                    Start Prediction ➔
+                </a>
+                <a href="{{ url_for('login') }}" class="btn btn-secondary btn-lg">
+                    Sign In
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

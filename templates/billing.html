@@ -1,233 +1,118 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Medical Bill</title>
+{% extends "base.html" %}
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f7fb;
-            margin: 0;
-            padding: 40px 20px;
-        }
+{% block title %}Medical Cost Estimation & Diagnostic Bill | Care Nova{% endblock %}
 
-        .bill {
-            max-width: 750px;
-            margin: auto;
-            background: white;
-            padding: 35px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.10);
-        }
-
-        .header {
-            text-align: center;
-        }
-
-        .header h1 {
-            margin-bottom: 8px;
-        }
-
-        .header p {
-            color: #666;
-        }
-
-        .section {
-            margin-top: 25px;
-        }
-
-        .line {
-            border-top: 1px solid #ddd;
-            margin: 25px 0;
-        }
-
-        .info {
-            background: #f8f9fa;
-            padding: 18px;
-            border-radius: 10px;
-        }
-
-        .info p {
-            margin: 10px 0;
-        }
-
-        .test {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .consultation {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-        }
-
-        .total-box {
-            margin-top: 25px;
-            padding: 18px;
-            background: #eef3ff;
-            border-radius: 10px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 22px;
-            font-weight: bold;
-        }
-
-        .buttons {
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        button {
-            padding: 12px 22px;
-            border: none;
-            border-radius: 8px;
-            font-size: 15px;
-            cursor: pointer;
-            margin: 5px;
-        }
-
-        .print-btn {
-            background: #2563eb;
-            color: white;
-        }
-
-        .predict-btn {
-            background: #16a34a;
-            color: white;
-        }
-
-        @media print {
-
-            body {
-                background: white;
-                padding: 0;
-            }
-
-            .bill {
-                box-shadow: none;
-                border: 1px solid #ddd;
-            }
-
-            .buttons {
-                display: none;
-            }
-        }
-    </style>
-</head>
-
-<body>
-
-<div class="bill">
-
-    <div class="header">
-
-        <h1>🧾 Medical Cost Estimation</h1>
-
-        <p>
-            Disease Prediction System
-        </p>
-
-    </div>
-
-    <div class="line"></div>
-
-
-    <!-- PATIENT MEDICAL SUMMARY -->
-
-    <div class="section">
-
-        <h2>🩺 Medical Summary</h2>
-
-        <div class="info">
-
-            <p>
-                <strong>Predicted Disease:</strong>
-                {{ disease }}
-            </p>
-
-            <p>
-                <strong>Recommended Specialist:</strong>
-                {{ specialist }}
-            </p>
-
+{% block content %}
+<div class="invoice-wrapper">
+    <!-- Invoice Header -->
+    <div class="invoice-header">
+        <div class="invoice-org">
+            <div class="invoice-brand">
+                <div class="brand-icon brand-icon-sm">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                    </svg>
+                </div>
+                <h2>Care Nova Clinical Estimates</h2>
+            </div>
+            <p class="invoice-org-sub">AI Clinical Guidance & Financial Transparency Portal</p>
+            <span class="invoice-badge">Official Diagnostic Cost Estimate</span>
         </div>
-
-    </div>
-
-
-    <!-- MEDICAL COST -->
-
-    <div class="section">
-
-        <h2>💰 Estimated Medical Costs</h2>
-
-        <div class="consultation">
-
-            <span>Doctor Consultation</span>
-
-            <strong>₹{{ consultation }}</strong>
-
+        <div class="invoice-meta">
+            <p><strong>Estimate Ref:</strong> #CN-{{ invoice_id if invoice_id else '2026-0042' }}</p>
+            <p><strong>Issued Date:</strong> {{ current_date if current_date else 'October 7, 2026' }}</p>
+            <p><strong>Status:</strong> <span class="badge-status-estimate">Preliminary Estimate</span></p>
         </div>
-
     </div>
 
-
-    <!-- LAB TESTS -->
-
+    <!-- Patient Medical Summary -->
     <div class="section">
-
-        <h2>🧪 Laboratory / Diagnostic Tests</h2>
-
-        {% for test, price in lab_tests %}
-
-        <div class="test">
-
-            <span>{{ test }}</span>
-
-            <strong>₹{{ price }}</strong>
-
+        <h3 class="section-heading-sm">
+            🩺 Patient & Diagnostic Summary
+        </h3>
+        <div class="patient-summary-box">
+            <div class="summary-item">
+                <strong>Patient Name</strong>
+                <span>{{ user_fullname if user_fullname else 'Outpatient Visitor' }}</span>
+            </div>
+            <div class="summary-item">
+                <strong>Predicted Condition</strong>
+                <span style="color: var(--primary);">{{ disease }}</span>
+            </div>
+            <div class="summary-item">
+                <strong>Recommended Specialist</strong>
+                <span style="color: #065f46;">{{ specialist }}</span>
+            </div>
         </div>
-
-        {% endfor %}
-
     </div>
 
+    <!-- Itemized Medical Cost Table -->
+    <div class="section">
+        <h3 class="section-heading-sm">
+            💰 Estimated Medical Costs & Diagnostic Investigations
+        </h3>
 
-    <!-- TOTAL -->
+        <div class="table-responsive">
+            <table class="invoice-table">
+                <thead>
+                    <tr>
+                        <th style="width: 8%;">#</th>
+                        <th style="width: 52%;">Service / Investigation Description</th>
+                        <th style="width: 25%;">Department Category</th>
+                        <th style="width: 15%;" class="price-col">Cost (INR)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Consultation -->
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <strong>Specialist Consultation Fee</strong>
+                            <div class="test-subtext">{{ specialist }} Clinical Examination & Review</div>
+                        </td>
+                        <td>Doctor Consultation</td>
+                        <td class="price-col">₹{{ consultation }}</td>
+                    </tr>
 
-    <div class="total-box">
-
-        <span>Estimated Total</span>
-
-        <span>₹{{ total }}</span>
-
+                    <!-- Laboratory Tests -->
+                    {% for test, price in lab_tests %}
+                    <tr>
+                        <td>{{ loop.index + 1 }}</td>
+                        <td>
+                            <strong>{{ test }}</strong>
+                            <div class="test-subtext">Pathology / Diagnostic Screening</div>
+                        </td>
+                        <td>Laboratory Investigation</td>
+                        <td class="price-col">₹{{ price }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
+    <!-- Total Cost Summary Box -->
+    <div class="total-summary-card">
+        <span class="total-label">Estimated Total Amount Payable:</span>
+        <span class="total-amount">₹{{ total }}</span>
+    </div>
 
-    <!-- BUTTONS -->
+    <!-- Disclaimer -->
+    <div class="invoice-disclaimer">
+        * Notice: Pricing estimates provided by Care Nova reflect standard laboratory and clinic tariff schedules in India (INR). Final charges may vary across specific healthcare networks, geographical locations, and supplemental tests ordered by your attending physician.
+    </div>
 
-    <div class="buttons">
-
-        <button
-            class="print-btn"
-            onclick="window.print()">
-            🖨️ Print Bill
+    <!-- Action Buttons -->
+    <div class="buttons no-print invoice-actions">
+        <button class="btn btn-primary btn-lg" onclick="window.print()">
+            🖨️ Print Estimate / Save PDF
         </button>
-
-        <a href="/disease_prediction">
-
-            <button class="predict-btn">
-                🔄 Predict Again
-            </button>
-
+        <a href="{{ url_for('disease_prediction') }}" class="btn btn-secondary btn-lg">
+            🔄 Predict Again
         </a>
-
+        <a href="{{ url_for('find_specialist', specialist=specialist) }}" class="btn btn-success btn-lg">
+            📍 Locate {{ specialist }}
+        </a>
     </div>
-
 </div>
-
-</body>
-</html>                                                        
+{% endblock %}

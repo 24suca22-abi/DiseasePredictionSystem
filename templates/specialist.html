@@ -1,37 +1,62 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Medical Specialist Recommendation</title>
-</head>
+{% extends "base.html" %}
 
-<body>
+{% block title %}Medical Specialist Recommendation | Care Nova{% endblock %}
 
-    <h1>Medical Specialist Recommendation</h1>
+{% block content %}
+<div class="container-narrow">
+    <div class="card specialist-card">
+        <div class="card-header text-center">
+            <div class="header-icon-badge">👨‍⚕️</div>
+            <h1 class="card-title">Medical Specialist Recommendation</h1>
+            <p class="card-subtitle">AI-matched clinical department referral by Care Nova</p>
+        </div>
 
-    <h2>Predicted Disease: {{ disease }}</h2>
+        <div class="patient-summary-box" style="margin-top: 24px;">
+            <div class="summary-item">
+                <strong>Predicted Condition</strong>
+                <span style="color: var(--primary);">{{ disease }}</span>
+            </div>
+            <div class="summary-item">
+                <strong>Confidence Score</strong>
+                <span style="color: var(--success-text);">{{ confidence }}%</span>
+            </div>
+            <div class="summary-item">
+                <strong>Recommended Specialist</strong>
+                <span style="color: #065f46;">{{ specialist }}</span>
+            </div>
+        </div>
 
-    <h2>Confidence Score: {{ confidence }}%</h2>
+        <div style="text-align: center; margin-top: 30px;">
+            <button class="btn btn-success btn-lg" onclick="findNearby()">
+                📍 Locate Nearby {{ specialist }}
+            </button>
+            <p id="location" style="margin-top: 14px; font-weight: 600; color: var(--primary); font-size: 0.95rem;"></p>
+        </div>
 
-    <h2>Recommended Specialist: {{ specialist }}</h2>
+        <div class="card-action-bar">
+            <a href="{{ url_for('billing', disease=disease, specialist=specialist) }}" class="btn btn-purple">
+                🧾 View Medical Cost Estimation
+            </a>
+            <a href="{{ url_for('disease_prediction') }}" class="btn btn-secondary">
+                🔄 Predict Again
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
 
-    <button onclick="findNearby()">
-        Find Nearby Specialist
-    </button>
-
-    <p id="location"></p>
-
-    <script>
-        function findNearby() {
-
-            if (navigator.geolocation) {
-
-                navigator.geolocation.getCurrentPosition(function(position) {
-
+{% block scripts %}
+<script>
+    function findNearby() {
+        if (navigator.geolocation) {
+            document.getElementById("location").innerHTML = "Detecting your GPS location...";
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
                     let latitude = position.coords.latitude;
                     let longitude = position.coords.longitude;
 
                     document.getElementById("location").innerHTML =
-                        "Location detected successfully!";
+                        "Location detected successfully! Opening Google Maps...";
 
                     let specialist = "{{ specialist }}";
 
@@ -41,15 +66,16 @@
                         "/@" + latitude + "," + longitude + ",14z";
 
                     window.open(mapUrl, "_blank");
-
-                });
-
-            } else {
-                document.getElementById("location").innerHTML =
-                    "Location is not supported by this browser.";
-            }
+                },
+                function(error) {
+                    document.getElementById("location").innerHTML =
+                        "Could not detect location automatically. Please search by city name manually.";
+                }
+            );
+        } else {
+            document.getElementById("location").innerHTML =
+                "Location services are not supported by this browser.";
         }
-    </script>
-
-</body>
-</html>
+    }
+</script>
+{% endblock %}

@@ -1,228 +1,140 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Prediction Result</title>
+{% extends "base.html" %}
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f7fb;
-            margin: 0;
-            padding: 40px 20px;
-        }
+{% block title %}Prediction Result - {{ disease }} | Care Nova{% endblock %}
 
-        .container {
-            max-width: 800px;
-            margin: auto;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            color: #666;
-        }
-
-        .card {
-            background: white;
-            padding: 25px;
-            margin-bottom: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-        }
-
-        .card h2 {
-            margin-top: 0;
-        }
-
-        .disease {
-            font-size: 28px;
-            font-weight: bold;
-            margin: 10px 0;
-        }
-
-        .confidence {
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .specialist {
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            margin-top: 10px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-size: 15px;
-        }
-
-        button {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 15px;
-            margin-top: 15px;
-        }
-
-        .specialist-btn {
-            background: #16a34a;
-            color: white;
-        }
-
-        .billing-btn {
-            background: #7c3aed;
-            color: white;
-        }
-
-        .predict-btn {
-            background: #2563eb;
-            color: white;
-        }
-
-        .note {
-            color: #777;
-            font-size: 13px;
-            margin-top: 15px;
-        }
-
-        .center {
-            text-align: center;
-        }
-    </style>
-</head>
-
-<body>
-
-<div class="container">
-
-    <div class="header">
-        <h1>🩺 Disease Prediction Result</h1>
-        <p>Your ML-based prediction result</p>
+{% block content %}
+<div class="container-narrow">
+    <!-- Result Header -->
+    <div class="result-header-banner">
+        <div class="result-badge-pill">Clinical Assessment Completed</div>
+        <h1>Care Nova Diagnostic Outcome</h1>
+        <p>Machine-learning evaluation based on your reported clinical symptoms</p>
     </div>
 
-
-    <!-- DISEASE RESULT -->
-
-    <div class="card">
-
-        <h2>🔍 Predicted Disease</h2>
-
-        <p class="disease">
-            {{ disease }}
-        </p>
-
+    <!-- Disease Result Card -->
+    <div class="card diagnosis-card" style="margin-bottom: 20px;">
+        <div>
+            <span class="category-badge" style="background: #dbeafe; color: #1e40af; font-weight: 700;">
+                DIAGNOSTIC OUTCOME
+            </span>
+            <h2 style="font-size: 1.15rem; color: var(--text-muted); margin-top: 10px;">
+                🔍 Predicted Condition
+            </h2>
+            <div class="disease-name">
+                {{ disease }}
+            </div>
+        </div>
+        <div class="diagnosis-icon-wrap">
+            <span style="font-size: 2.8rem;">📋</span>
+        </div>
     </div>
 
-
-    <!-- CONFIDENCE -->
-
-    <div class="card">
-
-        <h2>📊 Confidence Score</h2>
-
-        <p class="confidence">
-            {{ confidence }}%
+    <!-- Confidence Score Card -->
+    <div class="card" style="margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h2 style="font-size: 1.15rem; color: var(--text-muted);">
+                📊 Statistical Confidence
+            </h2>
+            <span class="confidence-val">{{ confidence }}%</span>
+        </div>
+        
+        <div class="meter-track">
+            <div class="meter-fill" style="width: {{ confidence }}%;"></div>
+        </div>
+        <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 8px;">
+            Probability calculated across correlated clinical indicators by Care Nova's Random Forest classifier.
         </p>
-
     </div>
 
-
-    <!-- SPECIALIST -->
-
-    <div class="card">
-
-        <h2>👨‍⚕️ Medical Specialist Recommendation</h2>
-
-        <p>
-            Recommended Specialist:
-        </p>
-
-        <p class="specialist">
+    <!-- Specialist Recommendation & Search Card -->
+    <div class="card specialist-card" style="margin-bottom: 20px;">
+        <span class="category-badge" style="background: #d1fae5; color: #065f46; font-weight: 700;">
+            CLINICAL REFERRAL
+        </span>
+        <h2 style="font-size: 1.15rem; color: var(--text-muted); margin-top: 10px;">
+            👨‍⚕️ Medical Specialist Recommendation
+        </h2>
+        <p style="margin-top: 4px; font-size: 0.95rem;">Recommended Specialty:</p>
+        <div class="specialist-title">
             {{ specialist }}
+        </div>
+
+        <div style="border-top: 1px solid var(--border-color); margin: 20px 0;"></div>
+
+        <h3 style="font-size: 1.15rem; margin-bottom: 6px;">📍 Locate Nearby {{ specialist }}</h3>
+        <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 16px;">
+            Find accredited clinics, specialists, and medical facilities in your location.
         </p>
 
-        <hr>
+        <form action="{{ url_for('find_specialist') }}" method="GET" class="nearby-form">
+            <input type="hidden" name="specialist" value="{{ specialist }}">
 
-        <h3>📍 Find Nearby Specialist</h3>
-
-        <form action="/find_specialist" method="GET">
-
-            <input type="hidden"
-                   name="specialist"
-                   value="{{ specialist }}">
-
-            <label>
-                Enter your location:
+            <label class="form-label" for="location-input">
+                Enter your city or locality:
             </label>
 
-            <input type="text"
-                   name="location"
-                   placeholder="Example: Chennai"
-                   required>
+            <div class="location-input-group">
+                <input 
+                    type="text" 
+                    id="location-input"
+                    name="location" 
+                    class="form-control" 
+                    placeholder="e.g. Chennai, Mumbai, Bangalore, Delhi..." 
+                    required
+                >
+                <button class="btn btn-success" type="submit">
+                    Find Specialist
+                </button>
+            </div>
 
-            <button class="specialist-btn" type="submit">
-                Find Nearby Specialist
-            </button>
-
+            <div style="margin-top: 14px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                <button 
+                    type="button" 
+                    class="btn btn-secondary btn-sm" 
+                    onclick="detectLocationAndFind('{{ specialist }}')"
+                >
+                    📍 Use My Current GPS Location
+                </button>
+                <span id="geo-status" style="font-size: 0.85rem; color: var(--primary); display: none;"></span>
+            </div>
         </form>
-
     </div>
 
-
-    <!-- BILLING -->
-
-    <div class="card">
-
-        <h2>🧾 Medical Cost Estimation</h2>
-
-        <p>
-            Check your estimated consultation and
-            laboratory test costs.
+    <!-- Medical Billing Estimation Preview Card -->
+    <div class="card" style="margin-bottom: 20px;">
+        <span class="category-badge" style="background: #f5f3ff; color: #7c3aed; font-weight: 700;">
+            FINANCIAL TRANSPARENCY
+        </span>
+        <h2 style="font-size: 1.15rem; color: var(--text-muted); margin-top: 10px;">
+            🧾 Diagnostic Cost Estimation
+        </h2>
+        <p style="margin: 8px 0 20px; font-size: 0.95rem; color: var(--text-muted);">
+            View an itemized estimate covering consultation fees and standard laboratory diagnostic investigations.
         </p>
-
-        <a href="/billing?disease={{ disease }}&specialist={{ specialist }}">
-
-            <button class="billing-btn">
-                View Medical Cost & Bill
+        <a href="{{ url_for('billing', disease=disease, specialist=specialist) }}">
+            <button class="btn btn-purple btn-lg" type="button">
+                View Medical Cost & Estimate Bill ➔
             </button>
-
         </a>
-
     </div>
 
-
-    <!-- PREDICT AGAIN -->
-
-    <div class="card center">
-
-        <a href="/disease_prediction">
-
-            <button class="predict-btn">
-                🔄 Predict Again
-            </button>
-
-        </a>
-
-        <p class="note">
-            Note: This system provides an ML-based prediction
-            for educational purposes.
+    <!-- Predict Again Card -->
+    <div class="card" style="text-align: center; margin-bottom: 24px;">
+        <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
+            <a href="{{ url_for('disease_prediction') }}">
+                <button class="btn btn-primary btn-lg" type="button">
+                    🔄 Run Another Assessment
+                </button>
+            </a>
+            <a href="{{ url_for('home') }}">
+                <button class="btn btn-secondary btn-lg" type="button">
+                    Home
+                </button>
+            </a>
+        </div>
+        <p class="note" style="margin-top: 16px; font-size: 0.85rem; color: var(--text-light);">
+            Note: Care Nova provides an ML-based prediction for educational and preliminary screening purposes.
         </p>
-
     </div>
-
 </div>
-
-</body>
-</html>
+{% endblock %}

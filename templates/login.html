@@ -1,34 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Disease Prediction System</title>
-</head>
+{% extends "base.html" %}
 
-<body>
+{% block title %}Login - Care Nova{% endblock %}
 
-    <h1>Disease Prediction System</h1>
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="brand-badge">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+            </div>
+            <h1 class="card-title">Welcome Back</h1>
+            <p class="card-subtitle">Sign in to your Care Nova account to continue</p>
+        </div>
 
-    <h2>Login</h2>
+        <form method="POST" action="{{ url_for('login') }}" class="auth-form">
+            <div class="form-group">
+                <label class="form-label" for="username">Username</label>
+                <div class="input-with-icon">
+                    <span class="field-icon">👤</span>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        class="form-control" 
+                        placeholder="Enter your username"
+                        required 
+                        autofocus
+                    >
+                </div>
+            </div>
 
-    <form method="POST"action="/login">
-        <label>Username:</label>
-        <input type="text" name="username" required>
+            <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <div class="input-with-icon">
+                    <span class="field-icon">🔒</span>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="form-control" 
+                        placeholder="Enter your password"
+                        required
+                    >
+                </div>
+            </div>
 
-        <br><br>
+            <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 12px;">
+                Sign In to Care Nova
+            </button>
+        </form>
 
-        <label>Password:</label>
-        <input type="password" name="password" required>
-
-        <br><br>
-
-        <button type="submit">Login</button>
-    </form>
-
-    <p>Don't have an account?</p>
-
-    <button>Register</button>
-
-</body>
-</html>
+        <div class="auth-footer">
+            <p class="auth-footer-text">Don't have an account yet?</p>
+            <a href="{{ url_for('register') }}" class="btn btn-secondary btn-block" style="margin-top: 10px;">
+                Create New Account
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
