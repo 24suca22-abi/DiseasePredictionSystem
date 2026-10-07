@@ -10,45 +10,33 @@
 
     <h1>Disease Prediction System</h1>
 
-    <h2>Create Account</h2>
+    <h2>User Registration</h2>
 
-    
+    <form action="/register" method="POST">
 
-        <form method="POST" action="/register">
+        <label>Full Name:</label><br>
+        <input type="text" name="fullname" required>
+        <br><br>
 
-    <label>Full Name:</label>
-    <input type="text" name="fullname" required>
+        <label>Username:</label><br>
+        <input type="text" name="username" required>
+        <br><br>
 
-    <br><br>
+        <label>Email:</label><br>
+        <input type="email" name="email" required>
+        <br><br>
 
-    <label>Username:</label>
-    <input type="text" name="username" required>
+        <label>Password:</label><br>
+        <input type="password" name="password" required>
+        <br><br>
 
-    <br><br>
+        <button type="submit">Register</button>
 
-    <label>Email:</label>
-    <input type="email" name="email" required>
+    </form>
 
-    <br><br>
+    <br>
 
-    <label>Password:</label>
-    <input type="password" name="password" required>
-
-    <br><br>
-
-    <label>Confirm Password:</label>
-    <input type="password" name="confirm_password" required>
-
-    <br><br>
-
-    <button type="submit">Register</button>
-
-</form>
-    
-
-    <p>Already have an account?</p>
-
-    <a href="/login">Login</a>
+    <a href="/login">Already have an account? Login</a>
 
 </body>
 </html>

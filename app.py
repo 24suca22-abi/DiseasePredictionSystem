@@ -69,40 +69,26 @@ def login():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-
     if request.method == "POST":
-
         fullname = request.form["fullname"]
         username = request.form["username"]
         email = request.form["email"]
         password = request.form["password"]
-        confirm_password = request.form["confirm_password"]
-
-        if password != confirm_password:
-            return "Passwords do not match!"
 
         connection = sqlite3.connect("database.db")
         cursor = connection.cursor()
 
-        try:
-            cursor.execute("""
-                INSERT INTO users
-                (fullname, username, email, password)
-                VALUES (?, ?, ?, ?)
-            """, (fullname, username, email, password))
+        cursor.execute(
+            "INSERT INTO users (fullname, username, email, password) VALUES (?, ?, ?, ?)",
+            (fullname, username, email, password)
+        )
 
-            connection.commit()
-
-        except sqlite3.IntegrityError:
-            connection.close()
-            return "Username already exists!"
-
+        connection.commit()
         connection.close()
 
         return redirect("/login")
 
     return render_template("register.html")
-
 
 # ---------------- DISEASE PREDICTION PAGE ----------------
 
